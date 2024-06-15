@@ -1,0 +1,56 @@
+/* styles.css */
+@keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .step {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 2rem 0;
+    opacity: 0; /* Start hidden */
+  }
+  
+  .step.visible {
+    animation: fadeInUp 1s forwards;
+  }
+  
+  @keyframes growLine {
+    from {
+      height: 0;
+    }
+    to {
+      height: 100%;
+    }
+  }
+  
+  .dashed-line {
+    width: 2px;
+    background: repeating-linear-gradient(
+      to bottom,
+      black,
+      black 4px,
+      transparent 4px,
+      transparent 8px
+    );
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0; /* Start hidden */
+  }
+  
+  .dashed-line.visible {
+    opacity: 1;
+    animation: growLine 4.5s forwards;
+  }
+  
