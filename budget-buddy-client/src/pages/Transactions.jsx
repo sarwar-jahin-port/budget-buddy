@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../hooks/useAuth';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { toast } from 'react-toastify';
 import TransactionForm from '../components/transactions/TransactionForm';
 import TransactionTable from '../components/transactions/TransactionTable';
-
+import ImgAI from '../components/transactions/TransactionImage';
 const Transactions = () => {
   const { user } = useAuth();
   const [transactions, setTransactions] = useState([]);
@@ -84,6 +85,7 @@ const Transactions = () => {
     <div>
       <TransactionForm/>
       <TransactionTable/>
+      
     </div>
   );
 };
