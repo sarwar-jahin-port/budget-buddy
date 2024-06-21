@@ -4,11 +4,12 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express()
 const port = 3000
 
+
 app.use(cors());
 app.use(express.json());
 
 
-const uri = "mongodb+srv://sarwarjahin:2hOjTYpfIJSMFf0C@cluster0.d3cyl9k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = "mongodb+srv://shahriarrijon:3dQjzPvas7BcynB6@cluster0.d3cyl9k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -114,3 +115,5 @@ app.listen(port, () => {
 
 // sarwarjahin
 // 2hOjTYpfIJSMFf0C
+
+// 
