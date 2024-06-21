@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express()
 const port = 3000
 
@@ -97,6 +97,35 @@ async function run() {
       }
     });
 
+    // Transactions API
+    app.post("/add-transaction", async(req, res) =>{
+      const transaction = req.body;
+
+      const result = await transactionsCollection.insertOne(transaction);
+      res.send(result);
+    })
+    app.get("/ten-transactions", async(req, res) =>{
+      const result = await transactionsCollection.find({}).toArray();
+      res.send(result);
+    })
+    app.patch("/update-transaction/:id", async(req, res)=>{
+      const {id} = req.params;
+      const updatedTransaction = req.body;
+
+      const result = await transactionsCollection.updateOne(
+        {_id: new ObjectId(id)},
+        {$set: updatedTransaction},
+      )
+      if(result?.modifiedCount>0) res.send("Updated");
+      else res.send("Failed to update");
+    })
+    app.delete("/delete-transaction/:id", async(req, res)=>{
+      const {id} = req.params;
+
+      const result = await transactionsCollection.deleteOne({_id: new ObjectId(id)});
+      if(result?.deletedCount==1) res.send("Deleted");
+      else res.send("Failed to delete");
+    })
   } finally {
     // await client.close();
   }
