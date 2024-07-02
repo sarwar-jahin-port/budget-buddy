@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from 'react';
+import TransactionEditForm from './TransactionEditForm';
 
 const TransactionTable = () => {
   const [transactions, setTransactions] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editTransaction, setEditTransaction] = useState({});
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      const response = await fetch('http://localhost:3000/transactions');
+      const response = await fetch('http://localhost:3000/ten-transactions');
       const data = await response.json();
       setTransactions(data);
     };
     fetchTransactions();
   }, []);
+
+  const handleEditClick = (transaction) =>{
+    setIsModalOpen(true);
+    setEditTransaction(transaction);
+  }
 
   return (
     <> 
@@ -37,12 +45,13 @@ const TransactionTable = () => {
             <td>{transaction.tag}</td>
             <td>{transaction.amount}</td>
             <td>
-              <button className="btn btn-warning btn-sm">Edit</button>
+              <button className="btn btn-warning btn-sm" onClick={() => handleEditClick(transaction)}>Edit</button>
               <button className="btn btn-danger btn-sm ml-2">Delete</button>
             </td>
           </tr>
         ))}
       </tbody>
+        {isModalOpen && <TransactionEditForm transaction={editTransaction} onClose={()=>setIsModalOpen(false)}/>}
     </table>
     </>
   );

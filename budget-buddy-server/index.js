@@ -101,8 +101,9 @@ async function run() {
     // Transactions API
     app.post("/add-transaction", async(req, res) =>{
       const transaction = req.body;
-
+      console.log(transaction);
       const result = await transactionsCollection.insertOne(transaction);
+      console.log(result);
       res.send(result);
     })
     app.get("/ten-transactions", async(req, res) =>{

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { toast } from 'react-toastify';
 
 async function fileToGenerativePart(file) {
     const base64EncodedDataPromise = new Promise((resolve) => {
@@ -16,7 +17,7 @@ async function fileToGenerativePart(file) {
 }
 
 const TransactionForm = ({ onSubmit }) => {
-    const { register, handleSubmit, setValue } = useForm();
+    const { register, handleSubmit, formState: {errors}, setValue } = useForm();
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('');
     const [showCalendar, setShowCalendar] = useState(false);
@@ -24,6 +25,7 @@ const TransactionForm = ({ onSubmit }) => {
     const [extractedText, setExtractedText] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
     const [geminiApiKey, setGeminiApiKey] = useState('AIzaSyBA-ljqvGDlV9IFOvL1PtTbt4BzmlvTh_A'); // Gemini API key
+    const tags = ["home rent", "transport", "food"];
 
     useEffect(() => {
         // Validate Gemini API key
@@ -90,8 +92,45 @@ const TransactionForm = ({ onSubmit }) => {
         }
     };
 
-    const onFormSubmit = (data) => {
-        onSubmit(data);
+    const cleanData = rawData =>{
+        const dateObj = new Date(rawData.date);
+
+        const formattedDate = dateObj.toLocaleDateString('en-US', {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+        });
+
+        const formattedTime = dateObj.toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true
+        });
+        
+        const cleanedData = {
+            date: formattedDate,
+            time: formattedTime,
+            category: rawData.category,
+            amount: rawData.amount,
+            tag: rawData.tag
+        }
+        return cleanedData;
+    }
+
+    const onFormSubmit = (rawData) => {
+        // onSubmit(data);
+        // console.log(rawData);
+        const cleanedData = cleanData(rawData);
+        console.log(cleanedData);
+        fetch("http://localhost:3000/add-transaction", {
+            method: "POST",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(cleanedData)
+        })
+        .then(res =>res.json())
+        .then(data => data?.acknowledged ? toast.success("Transaction Added") : toast.error("Something went wrong"));
     };
 
     useEffect(() => {
@@ -154,42 +193,52 @@ const TransactionForm = ({ onSubmit }) => {
                     </select>
                 </div>
 
-                <div className="form-control flex flex-row justify-center items-center w-full lg:w-full">
+                <div className="form-control flex flex-row justify-center items-center w-full lg:w-full relative">
                     <label className="label">
                         <span className="label-text">Amount:</span>
                     </label>
                     <input
                         type="number"
-                        {...register('amount')}
+                        {...register('amount', {
+                            required: "Amount is required",
+                            min: { value: 0, message: "Amount cannot be negative" }
+                        })}
                         className="input input-bordered w-full lg:w-full"
                     />
+                    {errors.amount && <p className="text-red-500 absolute -bottom-6 right-0">{errors.amount.message}</p>}
                 </div>
 
                 <div className="form-control flex flex-row justify-center items-center w-full lg:w-full">
                     <label className="label">
                         <span className="label-text">Tag:</span>
                     </label>
-                    <input
-                        type="text"
+                    <select
                         {...register('tag')}
                         className="input input-bordered w-full lg:w-full"
-                    />
+                    >
+                        <option value="">Select a tag</option> {/* Default option */}
+                        {tags.map((tag, index) => (
+                            <option key={index} value={tag}>
+                                {tag}
+                            </option>
+                        ))}
+                    </select>
                 </div>
 
                 <button type="submit" className="btn btn-primary flex flex-col justify-center items-center w-full lg:w-fit">
                     Add Transaction
                 </button>
-                
+
             </form>
 
             <div className="w-4/5 mx-auto flex flex-col justify-start items-start lg:flex-row lg:justify-center lg:items-center gap-5 p-5 m-5">
-            
-            <input type="file" accept="image/*" onChange={handleImageChange} />
+
+                <input type="file" accept="image/*" onChange={handleImageChange} />
                 <button className="btn btn-warning flex flex-col justify-center items-center w-full lg:w-fit" onClick={handleConvertClick} disabled={isProcessing}>
                     {isProcessing ? 'Converting...' : 'Convert'}
                 </button>
 
-            {extractedText && (
+                {extractedText && (
                     <div className="">
                         <h2>Extracted Text:</h2>
                         <pre>{extractedText}</pre>
