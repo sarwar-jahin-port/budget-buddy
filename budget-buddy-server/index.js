@@ -113,20 +113,21 @@ async function run() {
     app.patch("/update-transaction/:id", async(req, res)=>{
       const {id} = req.params;
       const updatedTransaction = req.body;
+      // console.log(updatedTransaction);
 
       const result = await transactionsCollection.updateOne(
         {_id: new ObjectId(id)},
         {$set: updatedTransaction},
       )
-      if(result?.modifiedCount>0) res.send("Updated");
-      else res.send("Failed to update");
+      if(result?.modifiedCount>0) res.send({updated: true});
+      else res.send({update: false});
     })
     app.delete("/delete-transaction/:id", async(req, res)=>{
       const {id} = req.params;
 
       const result = await transactionsCollection.deleteOne({_id: new ObjectId(id)});
-      if(result?.deletedCount==1) res.send("Deleted");
-      else res.send("Failed to delete");
+      if(result?.deletedCount==1) res.send({deleted: true});
+      else res.send({deleted: false});
     })
   } finally {
     // await client.close();

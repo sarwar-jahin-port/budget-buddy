@@ -119,7 +119,7 @@ const TransactionForm = ({ onSubmit }) => {
 
     const onFormSubmit = (rawData) => {
         // onSubmit(data);
-        // console.log(rawData);
+        console.log(rawData);
         const cleanedData = cleanData(rawData);
         console.log(cleanedData);
         fetch("http://localhost:3000/add-transaction", {

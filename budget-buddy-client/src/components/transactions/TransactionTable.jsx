@@ -1,23 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import TransactionEditForm from './TransactionEditForm';
+import { toast } from 'react-toastify';
 
 const TransactionTable = () => {
   const [transactions, setTransactions] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editTransaction, setEditTransaction] = useState({});
+  const [updated, setUpdated] = useState(false); // checks if data updated at TransactionEditForm.
 
   useEffect(() => {
     const fetchTransactions = async () => {
       const response = await fetch('http://localhost:3000/ten-transactions');
       const data = await response.json();
       setTransactions(data);
+      setUpdated(false);
     };
     fetchTransactions();
-  }, []);
+  }, [updated]);
 
   const handleEditClick = (transaction) =>{
     setIsModalOpen(true);
     setEditTransaction(transaction);
+  }
+
+  const handleDeleteClick = (id) =>{
+    fetch(`http://localhost:3000/delete-transaction/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      data.deleted ? toast.success("Transaction Deleted") : toast.error("Transaction failed to delete")
+      setUpdated(true);
+    })
   }
 
   return (
@@ -46,12 +63,12 @@ const TransactionTable = () => {
             <td>{transaction.amount}</td>
             <td>
               <button className="btn btn-warning btn-sm" onClick={() => handleEditClick(transaction)}>Edit</button>
-              <button className="btn btn-danger btn-sm ml-2">Delete</button>
+              <button className="btn btn-danger btn-sm ml-2" onClick={()=>handleDeleteClick(transaction._id)}>Delete</button>
             </td>
           </tr>
         ))}
       </tbody>
-        {isModalOpen && <TransactionEditForm transaction={editTransaction} onClose={()=>setIsModalOpen(false)}/>}
+        {isModalOpen && <TransactionEditForm transaction={editTransaction} onClose={()=>setIsModalOpen(false)} onUpdate = {()=>setUpdated(true)}/>}
     </table>
     </>
   );
