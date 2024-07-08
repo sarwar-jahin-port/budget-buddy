@@ -38,7 +38,7 @@ const TransactionTable = () => {
   }
 
   return (
-    <> 
+    <section className='my-10 min-h-96'> 
     <h1 className='text-5xl text-center my-10'>Transactions Table</h1>
     <table className="table w-full md:w-fit mx-auto border rounded mt-4">
       <thead>
@@ -70,7 +70,7 @@ const TransactionTable = () => {
       </tbody>
         {isModalOpen && <TransactionEditForm transaction={editTransaction} onClose={()=>setIsModalOpen(false)} onUpdate = {()=>setUpdated(true)}/>}
     </table>
-    </>
+    </section>
   );
 };
 

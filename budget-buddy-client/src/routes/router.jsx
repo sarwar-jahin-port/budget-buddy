@@ -5,7 +5,7 @@ import SignUp from "../pages/SignUp";
 import SignIn from "../pages/SignIn";
 import GetStarted from "../pages/GetStarted";
 import Profile from "../pages/Profile";
-import Transactions from "../pages/Transactions";
+import Dashboard from "../pages/Dashboard";
 
 const router = createBrowserRouter([
     {
@@ -33,8 +33,8 @@ const router = createBrowserRouter([
           element: <Profile/>
         },
         {
-          path: "transactions",
-          element: <Transactions/>
+          path: "dashboard",
+          element: <Dashboard/>
         }
       ]
     },

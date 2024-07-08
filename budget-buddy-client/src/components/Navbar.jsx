@@ -47,7 +47,7 @@ const Navbar = () => {
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
                     {!dataStatus && <li><Link to="/get-started">Get Started</Link></li>}
-                    <li><Link to='/transactions'>Transactions</Link></li>
+                    <li><Link to='/dashboard'>Dashboard</Link></li>
                     <li><Link to='/profile'>Profile</Link></li>
                 </ul>
             </div>
