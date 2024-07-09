@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import Calendar from 'react-calendar';
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify';
+import useAuth from '../../../hooks/useAuth';
 
 const TransactionEditForm = ({ transaction, onClose, onUpdate }) => {
+    const {user} = useAuth();
     const { register, handleSubmit, formState: { errors }, setValue } = useForm();
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('');
@@ -43,6 +45,7 @@ const TransactionEditForm = ({ transaction, onClose, onUpdate }) => {
 
     const onFormSubmit = (rawData) => {
         const cleanedData = cleanData(rawData);
+        cleanedData['user-email'] = user?.email ? user?.email : "";
         console.log(cleanedData);
         fetch(`http://localhost:3000/update-transaction/${transaction._id}`,{
             method: "PATCH",

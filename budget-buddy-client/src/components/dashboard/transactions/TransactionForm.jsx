@@ -4,6 +4,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { toast } from 'react-toastify';
+import useAuth from '../../../hooks/useAuth';
 
 async function fileToGenerativePart(file) {
     const base64EncodedDataPromise = new Promise((resolve) => {
@@ -17,6 +18,7 @@ async function fileToGenerativePart(file) {
 }
 
 const TransactionForm = ({ onSubmit }) => {
+    const {user} = useAuth();
     const { register, handleSubmit, formState: {errors}, setValue } = useForm();
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('');
@@ -121,6 +123,7 @@ const TransactionForm = ({ onSubmit }) => {
         // onSubmit(data);
         console.log(rawData);
         const cleanedData = cleanData(rawData);
+        cleanedData['user-email'] = user?.email ? user?.email : "";
         console.log(cleanedData);
         fetch("http://localhost:3000/add-transaction", {
             method: "POST",

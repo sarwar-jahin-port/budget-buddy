@@ -25,6 +25,7 @@
     "react-router-dom": "^6.23.1",
     "react-scroll": "^1.9.0",
     "react-toastify": "^10.0.5",
+    "recharts": "^2.12.7",
     "requirejs": "^2.3.6",
     "sort-by": "^1.2.0"
   },
