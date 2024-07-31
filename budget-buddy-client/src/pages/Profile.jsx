@@ -62,25 +62,25 @@ const Profile = () => {
       budgetCategories,
     }));
   };
-
+  console.log(userData);
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg my-5">
+    <section className="mx-auto p-6 bg-white shadow-md rounded-lg my-5">
       <h2 className="text-2xl font-bold mb-6 text-center">User Profile</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form className='grid md:grid-cols-2 lg:grid-cols-4 gap-10' onSubmit={handleSubmit(onSubmit)}>
         {/* Email */}
-        <div className="mb-6">
-          <h3 className="text-xl font-semibold mb-2">Email</h3>
+        <div className="mb-6 border min-w-fit p-10 flex flex-col justify-center items-center bg-green-200">
+          <img className='w-40 h-40 rounded-full cursor-pointer border text-center' src={userData?.photoURL} alt="profile picture" />
           <input
             type="email"
             defaultValue={userData.email}
             {...register('email')}
-            className="input input-bordered w-full"
-            readOnly
+            className="input !bg-transparent !border-none !text-black"
+            disabled
           />
         </div>
 
         {/* Income Categories */}
-        <div className="mb-6">
+        <div className="mb-6 text-center">
           <h3 className="text-xl font-semibold mb-2">Income Categories</h3>
           {userData.incomeCategories.map((category, index) => (
             <div key={index} className="form-control">
@@ -127,7 +127,7 @@ const Profile = () => {
         <div className="mb-6">
           <h3 className="text-xl font-semibold mb-2">Budget Categories</h3>
           {Object.entries(userData.budgetCategories).map(([category, amount], index) => (
-            <div key={index} className="form-control">
+            <div key={index} className="form-control mb-2">
               <label className="label">
                 <span className="label-text">{category}</span>
               </label>
@@ -149,11 +149,11 @@ const Profile = () => {
         </div>
 
         {/* Submit Button */}
-        <div className="flex justify-center">
-          <button type="submit" className="btn btn-primary">Update</button>
+        <div className="col-span-4 min-w-full">
+          <button type="submit" className="btn btn-warning w-full">Update</button>
         </div>
       </form>
-    </div>
+    </section>
   );
 };
 

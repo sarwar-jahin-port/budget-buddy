@@ -146,17 +146,17 @@ const TransactionForm = ({ onSubmit }) => {
     return (
         <>
             <h1 className='text-5xl text-center my-5'>Add a new Transaction</h1>
-            <form onSubmit={handleSubmit(onFormSubmit)} className="w-4/5 mx-auto flex flex-col justify-start items-start lg:flex-row lg:justify-center lg:items-center gap-5 border rounded p-5 m-5">
+            <form onSubmit={handleSubmit(onFormSubmit)} className="min-w-fit w-4/5 mx-auto flex flex-col justify-start items-start lg:flex-row lg:justify-center lg:items-center gap-5 border rounded p-5 m-5">
                 <div className="form-control flex flex-row justify-center items-center w-full lg:w-full relative">
                     <label className="label">
-                        <span className="label-text">Date:</span>
+                        <span className="label-text text-xl">Date:</span>
                     </label>
                     <input
                         type="text"
                         value={date.toLocaleDateString()}
                         onClick={() => setShowCalendar(!showCalendar)}
                         readOnly
-                        className="input input-bordered cursor-pointer w-full lg:w-full"
+                        className="input input-bordered cursor-pointer w-full md:max-w-fit"
                     />
                     {showCalendar && (
                         <div className="absolute top-14">
@@ -172,7 +172,7 @@ const TransactionForm = ({ onSubmit }) => {
 
                 <div className="form-control flex flex-row justify-center items-center w-full lg:w-full">
                     <label className="label">
-                        <span className="label-text">Time:</span>
+                        <span className="label-text text-xl">Time:</span>
                     </label>
                     <input
                         type="time"
@@ -181,16 +181,16 @@ const TransactionForm = ({ onSubmit }) => {
                             setTime(e.target.value);
                             setValue('time', e.target.value);
                         }}
-                        className="input input-bordered w-full lg:w-full"
+                        className="input input-bordered w-full md:max-w-fit"
                     />
                     <input type="hidden" {...register('time')} value={time} />
                 </div>
 
                 <div className="form-control flex flex-row justify-center items-center w-full lg:w-full">
                     <label className="label">
-                        <span className="label-text">Category:</span>
+                        <span className="label-text text-xl">Category:</span>
                     </label>
-                    <select {...register('category')} className="select select-bordered w-full lg:w-full">
+                    <select {...register('category')} className="select select-bordered w-full md:max-w-fit">
                         <option value="income">Income</option>
                         <option value="expense">Expense</option>
                     </select>
@@ -198,7 +198,7 @@ const TransactionForm = ({ onSubmit }) => {
 
                 <div className="form-control flex flex-row justify-center items-center w-full lg:w-full relative">
                     <label className="label">
-                        <span className="label-text">Amount:</span>
+                        <span className="label-text text-xl">Amount:</span>
                     </label>
                     <input
                         type="number"
@@ -206,18 +206,18 @@ const TransactionForm = ({ onSubmit }) => {
                             required: "Amount is required",
                             min: { value: 0, message: "Amount cannot be negative" }
                         })}
-                        className="input input-bordered w-full lg:w-full"
+                        className="input input-bordered w-full md:max-w-fit"
                     />
                     {errors.amount && <p className="text-red-500 absolute -bottom-6 right-0">{errors.amount.message}</p>}
                 </div>
 
                 <div className="form-control flex flex-row justify-center items-center w-full lg:w-full">
                     <label className="label">
-                        <span className="label-text">Tag:</span>
+                        <span className="label-text text-xl">Tag:</span>
                     </label>
                     <select
                         {...register('tag')}
-                        className="input input-bordered w-full lg:w-full"
+                        className="input input-bordered w-full md:max-w-fit"
                     >
                         <option value="">Select a tag</option> {/* Default option */}
                         {tags.map((tag, index) => (
