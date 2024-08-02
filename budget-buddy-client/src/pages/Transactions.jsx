@@ -23,7 +23,7 @@ const Transactions = () => {
   }, [currentPage]);
 
   const fetchCategories = () => {
-    fetch(`http://localhost:3000/user-data/${user?.email}`)
+    fetch(`http://localhost:3000/data-status/${user?.email}`)
       .then(res => res.json())
       .then(data => {
         setIncomeCategories(data.incomeCategories || []);
@@ -33,7 +33,7 @@ const Transactions = () => {
   };
 
   const fetchTransactions = () => {
-    fetch(`http://localhost:3000/transactions/${user?.email}?page=${currentPage}`)
+    fetch(`http://localhost:3000/ten-transactions/${user?.email}?page=${currentPage}`)
       .then(res => res.json())
       .then(data => {
         setTransactions(data.transactions);

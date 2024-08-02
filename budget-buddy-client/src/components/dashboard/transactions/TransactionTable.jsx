@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import TransactionEditForm from './TransactionEditForm';
 import { toast } from 'react-toastify';
+import useAuth from '../../../hooks/useAuth';
 
 const TransactionTable = () => {
+  const {user} = useAuth();
   const [transactions, setTransactions] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editTransaction, setEditTransaction] = useState({});
@@ -10,7 +12,7 @@ const TransactionTable = () => {
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      const response = await fetch('http://localhost:3000/ten-transactions');
+      const response = await fetch(`http://localhost:3000/ten-transactions/${user?.email}`);
       const data = await response.json();
       setTransactions(data);
       setUpdated(false);
