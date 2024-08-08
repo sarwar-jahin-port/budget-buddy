@@ -132,6 +132,11 @@ async function run() {
       if(result?.deletedCount==1) res.send({deleted: true});
       else res.send({deleted: false});
     })
+
+    // Analysis API
+    // code in progress
+    
+
   } finally {
     // await client.close();
   }
