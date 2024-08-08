@@ -71,7 +71,7 @@ async function run() {
       const email = req.params.email;
 
       const user = await usersCollection.findOne({"email": email});
-      console.log(user);
+      // console.log(user);
       if(user?.dataStatus){
         res.send({"dataStatus": true})
       }else res.send({"dataStatus": false})
@@ -106,8 +106,11 @@ async function run() {
       console.log(result);
       res.send(result);
     })
-    app.get("/ten-transactions", async(req, res) =>{
-      const result = await transactionsCollection.find({}).toArray();
+    app.get("/ten-transactions/:email", async(req, res) =>{
+      const {email} = req.params;
+      console.log(email);
+      const result = await transactionsCollection.find({"user-email": email}).toArray();
+      console.log(result);
       res.send(result);
     })
     app.patch("/update-transaction/:id", async(req, res)=>{
