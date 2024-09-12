@@ -159,11 +159,6 @@ async function run() {
           user = new UserAnalysis({ email, transactions: [] }); // This creates a local instance of the schema for a user
         }
 
-        // Ensure that transactions is always an array 
-        if (!Array.isArray(user.transactions)) { // *** POSSIBLY REDUNDENT/CAN BE REMOVED ***
-          user.transactions = [];
-        }
-
         // Looks throught the transactions of the current user and check if any entry is made for that month
         let monthData = user.transactions.find(trans => trans.month === getmonth); 
 
