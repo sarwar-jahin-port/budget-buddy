@@ -21,7 +21,7 @@ const client = new MongoClient(uri, {
 });
 
 // Connecting using mongoose to utilize models and schemas
-mongoose.connect(uri)
+mongoose.connect(uri, {dbName: 'budgetBuddyDB'})
 .then(() => console.log('MongoDB connected successfully(mongoose)'))
 .catch(err => console.error('MongoDB connection error(mongoose:', err));
 
@@ -36,7 +36,7 @@ async function run() {
     const usersCollection = budgetBuddyDB.collection("usersCollection");
     const categoriesCollection = budgetBuddyDB.collection("categoriesCollection");
     const transactionsCollection  = budgetBuddyDB.collection("transactionsCollection");
-    const analysisCollection = budgetBuddyDB.collection("analysisCollection"); // ** REDUNDENT/CAN BE REMOVED **
+    //const analysisCollection = budgetBuddyDB.collection("analysisCollection"); // ** REDUNDENT/CAN BE REMOVED **
 
     // add user to db
     app.post("/add-user", async(req, res) =>{
