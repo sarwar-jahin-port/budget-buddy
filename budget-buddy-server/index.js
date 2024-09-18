@@ -36,9 +36,8 @@ async function run() {
     const usersCollection = budgetBuddyDB.collection("usersCollection");
     const categoriesCollection = budgetBuddyDB.collection("categoriesCollection");
     const transactionsCollection  = budgetBuddyDB.collection("transactionsCollection");
-    //const analysisCollection = budgetBuddyDB.collection("analysisCollection"); // ** REDUNDENT/CAN BE REMOVED **
 
-    // add user to db
+    // add user to db ***
     app.post("/add-user", async(req, res) =>{
         const email = req.body;
         // console.log(email);
@@ -53,7 +52,7 @@ async function run() {
         }
 
     })
-    // update budget data
+    // update budget data ***
     app.patch("/user-budget-data", async(req, res)=>{
         const {data:budgetData, user} = req.body;
         console.log(req.body);
@@ -71,9 +70,8 @@ async function run() {
             }
         )
         res.send(result);
-        // 
     })
-    // get user data status
+    // get user data status ***
     app.get("/data-status/:email", async(req, res) =>{
       const email = req.params.email;
 
@@ -83,13 +81,13 @@ async function run() {
         res.send({"dataStatus": true})
       }else res.send({"dataStatus": false})
     })
-    // get user data
+    // get user data ***
     app.get("/user/:email", async (req, res) => {
       const email = req.params.email;
       const user = await usersCollection.findOne({ email });
       res.send(user);
     });
-    // update user data along with budget data
+    // update user data along with budget data ***
     app.patch("/user/:email", async (req, res) => {
       const email = req.params.email;
       const updates = req.body;
@@ -105,7 +103,7 @@ async function run() {
       }
     });
 
-    // Transactions API
+    // Transactions API ***
     app.post("/add-transaction", async(req, res) =>{
       const transaction = req.body;
       console.log(transaction);
@@ -113,6 +111,7 @@ async function run() {
       console.log(result);
       res.send(result);
     })
+    // Retrieve user transactions ***
     app.get("/ten-transactions/:email", async(req, res) =>{
       const {email} = req.params;
       console.log(email);
@@ -120,6 +119,7 @@ async function run() {
       console.log(result);
       res.send(result);
     })
+    // Update existing Transactions ***
     app.patch("/update-transaction/:id", async(req, res)=>{
       const {id} = req.params;
       const updatedTransaction = req.body;
@@ -132,6 +132,7 @@ async function run() {
       if(result?.modifiedCount>0) res.send({updated: true});
       else res.send({update: false});
     })
+    // Delete User ***
     app.delete("/delete-transaction/:id", async(req, res)=>{
       const {id} = req.params;
 
@@ -140,8 +141,8 @@ async function run() {
       else res.send({deleted: false});
     })
 
-    // Analysis API
-    app.post('/Transaction-Analysis', async (req, res) => {
+    // Analysis API ***
+    app.post('/Transaction-Analysis/incomeVexpense', async (req, res) => {
       
       // Recieved JSON data of the user
       const { amount, date, category, email } = req.body;
