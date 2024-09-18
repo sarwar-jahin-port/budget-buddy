@@ -18,6 +18,8 @@ app.use(express.json());
 
 // Route handlers
 app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/transactions', require('./routes/transactionRoutes'));
+app.use('/api/analysis', require('')); // TODO : path to route controller
 
 // Global Error handling Middleware
 app.use((er, req, res, next) =>{
